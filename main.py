@@ -1,17 +1,16 @@
 import random
 
 board = [
-		[" |", " |", " "],
-		[" |", " |", " "],
-		[" |", " |", " "]]
+		[" ", " ", " "],
+		[" ", " ", " "],
+		[" ", " ", " "]]
 
 p1 = "X"
 p2 = "O"
 
 def display_board():
 	for row in board:
-		print(row[0], row[1], row[2])
-	
+		print(row[0] + "|", row[1] + "|", row[2])
 	print("\n")
 
 def place_piece(row, column, piece):
@@ -19,10 +18,8 @@ def place_piece(row, column, piece):
 	if is_taken(row, column):
 		print("Can not put piece there. Please try again!")
 		#ask for row, column again
-	elif column == 2:
-		board[row][column] = f"{piece}"
 	else:
-		board[row][column] = f"{piece}|"
+		board[row][column] = piece
 
 
 def is_taken(row, column):
@@ -58,24 +55,57 @@ def ask_place():
 	row = int(input())
 	print("Which column would you like to put it in?")
 	column = int(input())
-	return row, column
+	return row-1, column-1
+
+
+def get_piece(row, column):
+	"""Returns piece of row and column on board"""
+	return board[row][column]
+
+
+def	has_won(piece, row, column):
+	"""Checks if the player won when placing its latest piece""" 
+	# We will need to know what piece we are looking for
+	# We will then need to know the row and column placement
+	# first check column if three in a row
+	for i in range(3):
+		# check if wrong piece then break
+		if (piece == get_piece(i, column)):
+			if (i == 2):
+				return True
+		else:
+			break
+	return False
+	# second check row if three in a row2
+
+	# last check diagonal
+	
+	# return true statement if player has won
+	# else return false
 
 
 def main():
 	"""Loops through game and"""
 	turn = None
+	for i in range(3):
+		print(i)
 	display_board()
 	turn = get_player_turn(turn)
+	print(f"Player with {turn} starts!")
 	for i in range(9):
 		while(True):	
 			row, column = ask_place()
 			if (not is_taken(row, column)):
 				break
-			
+			print("Place is taken, try again")
 		place_piece(row, column, turn)
-		turn = switch_turn(turn)
-
 		display_board()
+		# check if piece won the game
+		if (has_won(turn, row, column)):
+			print(f"Player {turn} has won, congratulations!")
+			# break or restart
+		turn = switch_turn(turn)
+		
 
 
 main()
