@@ -1,12 +1,12 @@
 import random
+from board import Board
+from player import Player
 
 board = [
 		[" ", " ", " "],
 		[" ", " ", " "],
 		[" ", " ", " "]]
 
-p1 = "X"
-p2 = "O"
 
 def display_board():
 	for row in board:
@@ -41,7 +41,7 @@ def get_player_turn(turn):
 	return turn
 
 
-def switch_turn(cur_user):
+def switch_turn(cur_user, ):
 	"""Switch the users turns"""
 	if cur_user == p1:
 		return p2
@@ -86,7 +86,19 @@ def	has_won(piece, row, column):
 
 def main():
 	"""Loops through game and"""
-	turn = None
+	board = Board()
+	player_one = Player("X")
+	player_two = Player("O")
+	board.display()
+
+	continuePlaying = True
+	currentPlayer = random.choice([player_one, player_two])
+	while (continuePlaying):
+		currentPlayer.place_piece(0, 0, board)
+		break
+		pass
+	board.display()
+	"""turn = None
 	for i in range(3):
 		print(i)
 	display_board()
@@ -104,7 +116,7 @@ def main():
 		if (has_won(turn, row, column)):
 			print(f"Player {turn} has won, congratulations!")
 			# break or restart
-		turn = switch_turn(turn)
+		turn = switch_turn(turn)"""
 		
 
 
