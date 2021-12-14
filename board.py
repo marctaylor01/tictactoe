@@ -1,4 +1,6 @@
-import player
+from player import Player
+BOARD_SIZE = 3
+LAST_CHECK = 2
 
 class Board:
 	"""A class representing the board"""
@@ -7,7 +9,7 @@ class Board:
 			["Empty", "Empty", "Empty"], 
 			["Empty", "Empty", "Empty"]
 			]
-	player.Player
+
 	def __init__(self):
 		return 
 
@@ -26,18 +28,34 @@ class Board:
 	def check_three_in_a_row(self, player):
 		"""Checks if player has won"""
 		# check first each row
-		for row in range(3):
-			for col in range(3):
+		for row in range(BOARD_SIZE):
+			for col in range(BOARD_SIZE):
 			# check if empty or other piece
-				if (self.board[row][col] != player.playing):
+				if (self.board[row][col] != player.playing_piece):
 					break
-				elif(col == 2):
+				elif(col == LAST_CHECK):
+					return True
+		# check each column
+		for col in range(BOARD_SIZE):
+			for row in range(BOARD_SIZE):
+				if (self.board[row][col] != player.playing_piece):
+					break
+				elif (row == LAST_CHECK):
 					return True
 
-
-		# check each column
-
 		# check the diagonal
+		for row_col in range(BOARD_SIZE):
+			if (self.board[row_col][row_col] != player.playing_piece):
+				break
+			elif (row_col == LAST_CHECK):
+				return True
+
+		#check outher diagonal (0,2) (1,1) (2,0)
+		for row in range(BOARD_SIZE):
+			if (self.board[row][BOARD_SIZE-1-row] != player.playing_piece):
+				break
+			elif (row == LAST_CHECK):
+				return True
 
 	def display(self):
 		"""Print out the board"""

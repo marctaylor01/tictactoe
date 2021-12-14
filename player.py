@@ -6,7 +6,7 @@ class Player:
 
 	def place_piece(self, row, column, board_obj):
 		"place piece in a specific row and column"
-		if board.is_taken(row, column):
+		if board_obj.is_taken(row, column):
 			print("Can not put piece there. Please try again!")
 			#ask for row, column again
 		else:

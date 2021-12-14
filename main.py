@@ -2,10 +2,8 @@ import random
 from board import Board
 from player import Player
 
-board = [
-		[" ", " ", " "],
-		[" ", " ", " "],
-		[" ", " ", " "]]
+class TicTacToe:
+	"""A class representing the game"""
 
 
 def display_board():
@@ -22,13 +20,6 @@ def place_piece(row, column, piece):
 		board[row][column] = piece
 
 
-def is_taken(row, column):
-	"""Checks if piece is already put on specific spot"""
-	if p1 in board[row][column] or p2 in board[row][column]:
-		return True
-	return False
-
-
 def get_player_turn(turn):
 	"""Switch players turn and randomize starter"""
 	if turn == None:
@@ -41,7 +32,7 @@ def get_player_turn(turn):
 	return turn
 
 
-def switch_turn(cur_user, ):
+def switch_turn(cur_user):
 	"""Switch the users turns"""
 	if cur_user == p1:
 		return p2
@@ -98,6 +89,7 @@ def main():
 		break
 		pass
 	board.display()
+	board.check_three_in_a_row(player_one)
 	"""turn = None
 	for i in range(3):
 		print(i)
