@@ -43,15 +43,13 @@ def switch_turn(cur_user):
 def ask_place():
 	"""Ask user to put in row and column, returns as a tuple."""
 	print("Which row would you like to put it in?")
-	row = int(input())
-	print("Which column would you like to put it in?")
-	column = int(input())
-	return row-1, column-1
-
-
-def get_piece(row, column):
-	"""Returns piece of row and column on board"""
-	return board[row][column]
+	try:
+		row = int(input())
+		print("Which column would you like to put it in?")
+		column = int(input())
+		return row-1, column-1
+	except:
+		return ask_place()		
 
 
 def	has_won(piece, row, column):
@@ -85,11 +83,15 @@ def main():
 	continuePlaying = True
 	currentPlayer = random.choice([player_one, player_two])
 	while (continuePlaying):
-		currentPlayer.place_piece(0, 0, board)
-		break
-		pass
-	board.display()
-	board.check_three_in_a_row(player_one)
+		print(str(currentPlayer.playing_piece) + " turn")
+		# ask for row and column
+		row, col = ask_place()
+		currentPlayer.place_piece(row, col, board)
+		board.display()
+		if (board.check_three_in_a_row(currentPlayer)):
+			print(str(currentPlayer.playing_piece) + " has won")
+			break
+
 	"""turn = None
 	for i in range(3):
 		print(i)
