@@ -1,43 +1,17 @@
 import random
-from board import Board
+from board import *
 from player import Player
 
 class TicTacToe:
 	"""A class representing the game"""
 
 
-def display_board():
-	for row in board:
-		print(row[0] + "|", row[1] + "|", row[2])
-	print("\n")
-
-def place_piece(row, column, piece):
-	"place piece in a specific row and column"
-	if is_taken(row, column):
-		print("Can not put piece there. Please try again!")
-		#ask for row, column again
-	else:
-		board[row][column] = piece
-
-
-def get_player_turn(turn):
-	"""Switch players turn and randomize starter"""
-	if turn == None:
-		# randomize player
-		number = random.randint(1,2)
-		if number == 1:
-			turn = p1
-		else:
-			turn = p2
-	return turn
-
-
-def switch_turn(cur_user):
+def switch_turn(cur_player, player1, player2):
 	"""Switch the users turns"""
-	if cur_user == p1:
-		return p2
+	if cur_player == player1:
+		return player2
 	else:
-		return p1
+		return player1
 
 
 def ask_place():
@@ -47,81 +21,99 @@ def ask_place():
 		row = int(input())
 		print("Which column would you like to put it in?")
 		column = int(input())
+		assert (0 < row < 4 and  0 < column < 4) 
 		return row-1, column-1
 	except:
-		return ask_place()		
+		print("Your row or column is not a valid place on the board")
+		return ask_place()
 
 
-def	has_won(piece, row, column):
-	"""Checks if the player won when placing its latest piece""" 
-	# We will need to know what piece we are looking for
-	# We will then need to know the row and column placement
-	# first check column if three in a row
-	for i in range(3):
-		# check if wrong piece then break
-		if (piece == get_piece(i, column)):
-			if (i == 2):
-				return True
-		else:
-			break
-	return False
-	# second check row if three in a row2
-
-	# last check diagonal
-	
-	# return true statement if player has won
-	# else return false
-
-
-def main():
-	"""Loops through game and"""
-	board = Board()
-	player_one = Player("X")
-	player_two = Player("O")
+def reset_game(board) :
+	"""Shall clear the terminal and prepare for next game"""
+	# clear the board
+	board.reset_board()
 	board.display()
 
-	continuePlaying = True
-	currentPlayer = random.choice([player_one, player_two])
-	while (continuePlaying):
-		print(str(currentPlayer.playing_piece) + " turn")
-		# ask for row and column
+# 
+def main():
+	"""Loops through game and prints and has the structure for a simple
+		game of tic tac toe."""
+	# init game components
+	board = Board(3, 3)
+	player_one = Player("X")
+	player_two = Player("O")
+
+	board.display()
+
+	# check 
+	continue_playing = True
+	current_player = random.choice([player_one, player_two])
+	while (continue_playing):
+		print(str(current_player.playing_piece) + " turn")
+
+		# gets a valid place to put piece
 		row, col = ask_place()
-		currentPlayer.place_piece(row, col, board)
+		while (board.is_taken(row, col)):
+			print("Is already taken, try another place!")
+			row, col = ask_place()
+		current_player.place_piece(row, col, board)
+		
 		board.display()
-		if (board.check_three_in_a_row(currentPlayer)):
-			print(str(currentPlayer.playing_piece) + " has won")
-			break
+		# check if game is over
+		if (board.has_won(current_player)):
+			print(str(current_player.playing_piece) + " has won")
+			play_again = None
+			print("Would you like to play again? y/n!")
+			while (play_again != "y" and play_again != "n") :
+				play_again = input()
+			if (play_again == "y") :
+				reset_game(board)
+			else :
+				continue_playing = False
+		# in case of draw
+		elif (board.is_full()) :
+			print("It is a tie, would you like to play again? y/n!")
+			play_again = None
+			while (play_again != "y" and play_again != "n") :
+				play_again = input()
+			if (play_again == "y") :
+				reset_game(board)
+				pass
+			else :
+				continue_playing = False
 
-	"""turn = None
-	for i in range(3):
-		print(i)
-	display_board()
-	turn = get_player_turn(turn)
-	print(f"Player with {turn} starts!")
-	for i in range(9):
-		while(True):	
-			row, column = ask_place()
-			if (not is_taken(row, column)):
-				break
-			print("Place is taken, try again")
-		place_piece(row, column, turn)
-		display_board()
-		# check if piece won the game
-		if (has_won(turn, row, column)):
-			print(f"Player {turn} has won, congratulations!")
-			# break or restart
-		turn = switch_turn(turn)"""
-		
+		current_player = switch_turn(current_player, player_one, player_two)
+
+def four_in_a_row():
+	"""Play a game of 4 in a row"""
+	player1 = Player("X")
+	player2 = Player("O")
+	board = FourInARowBoard(6, 7)
+	board.display()
+
+	playing = True
+	current_player = random.choice([player1, player2])
+	while (playing):
+		print(str(current_player.playing_piece) + " turn.")
+		column = 0
+		while(True):
+			try:
+				column = int(input())
+			except:
+				pass
+			if (0 < column <= board.COLUMNS):
+				if (board.is_valid(column)):
+					break
+				else:
+					print("Can not put piecie there")
+			else:
+				print("Input was not valid, needs to be in bounds")
 
 
-main()
-"""
-if __name__== "__main__":
-	turn = get_player_turn(turn)
-	place_piece(0, 0, 'X')
-	display_board()
-	place_piece(0, 0, "O")
-	main()
-	"""
+		board.place_piece(None, column-1, current_player)
+		board.display()
+		current_player = switch_turn(current_player, player1, player2)
 
-		
+
+four_in_a_row()
+# main()
