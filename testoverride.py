@@ -10,11 +10,11 @@ class Child(Parent):
 	def __init__(self) -> None:
 		super().__init__()
 
-	def test(self, string):
+	def test(self):
 		print("this is child")
 
 
 child = Child()
-child.test("t")
+child.test()
 parent = Parent()
 parent.test()

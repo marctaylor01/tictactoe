@@ -102,16 +102,22 @@ def four_in_a_row():
 			except:
 				pass
 			if (0 < column <= board.COLUMNS):
-				if (board.is_valid(column)):
+				if (board.is_valid(column-1)):
 					break
 				else:
-					print("Can not put piecie there")
+					print("Can not put piece there! Please insert another column.")
 			else:
-				print("Input was not valid, needs to be in bounds")
+				print("Input was not valid, needs to be in bounds! Try again.")
 
 
-		board.place_piece(None, column-1, current_player)
+		x, y = board.place_piece(column-1, current_player)
 		board.display()
+		# check if won
+		# if won congratulate and break
+		if (board.has_won(current_player, x, y)):
+			print(f"Congratulations! {current_player} has won the game!!!")
+			break
+		# else continue
 		current_player = switch_turn(current_player, player1, player2)
 
 

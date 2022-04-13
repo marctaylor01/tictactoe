@@ -109,18 +109,18 @@ class FourInARowBoard(Board):
 			will be possible.
 		"""
 		return self.board[0][column] == "Empty"
-
 	# might for performance purpose override is_full function
 
 
-	def place_piece(self, row, col, player):
-		"""Place pice in certain column, row is not necessary only for practical reasons
+	def place_piece(self, col, player):
+		"""Place piece in certain column, row is not necessary only for practical reasons
 			Does the calculations of dropping the piece"""
 		find_row = self.ROWS - 1
 		while(self.is_taken(find_row, col)):
 			find_row -= 1
 
 		self.board[find_row][col] = player.playing_piece
+		return find_row, col
 	
 
 	def has_won(self, player, row, col):
@@ -149,7 +149,7 @@ class FourInARowBoard(Board):
 		# go through each diagonal, first left diagonal
 		# assume we have put it into row and col
 		start_x, start_y = col, row
-		while(start_x != 0 or start_y != 0):
+		while(start_x != 0 and start_y != 0):
 			start_y -= 1
 			start_x -= 1
 		while(True):
@@ -167,7 +167,7 @@ class FourInARowBoard(Board):
 
 
 		start_x, start_y = col, row
-		while (start_x != self.board.COLUMNS - 1 or start_y != 0):
+		while (start_x != self.COLUMNS - 1 and start_y != 0):
 			start_y -=1
 			start_x +=1
 
