@@ -114,7 +114,7 @@ class FourInARowBoard(Board):
 
 	def place_piece(self, col, player):
 		"""Place piece in certain column, row is not necessary only for practical reasons
-			Does the calculations of dropping the piece"""
+			Does the calculations of dropping the piece, returns the spot of row and column"""
 		find_row = self.ROWS - 1
 		while(self.is_taken(find_row, col)):
 			find_row -= 1

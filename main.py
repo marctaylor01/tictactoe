@@ -1,4 +1,5 @@
 import random
+import visual
 from board import *
 from player import Player
 
@@ -86,6 +87,9 @@ def main():
 
 def four_in_a_row():
 	"""Play a game of 4 in a row"""
+	# init visuals
+	visual.display_surface
+	
 	player1 = Player("X")
 	player2 = Player("O")
 	board = FourInARowBoard(6, 7)
@@ -110,7 +114,11 @@ def four_in_a_row():
 				print("Input was not valid, needs to be in bounds! Try again.")
 
 
-		x, y = board.place_piece(column-1, current_player)
+		row, col = board.place_piece(column-1, current_player)
+		if(current_player.playing_piece == "X"):
+			visual.draw_x(row, col)
+		else:
+			visual.draw_circle(row, col)
 		board.display()
 		# check if won
 		# if won congratulate and break
